@@ -16,10 +16,16 @@
             android:name=".Login"
             android:exported="false" />
         <activity
-            android:name=".registro"
+            android:name=".Perfil"
             android:exported="false" />
         <activity
             android:name=".MenuPrincipal"
+            android:exported="false" />
+        <activity
+            android:name=".Registro"
+            android:exported="false" />
+        <activity
+            android:name=".activity_user_list"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -17,21 +17,22 @@ public class Login extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
     private Button loginButton;
     private ProgressBar progressBar;
-    private TextView registerTextView;  // Nuevo TextView para ir al registro
+    private TextView registerTextView;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Referencias a los campos de entrada y el botón
+        dbHelper = new DatabaseHelper(this);
+
         emailEditText = findViewById(R.id.email_input);
         passwordEditText = findViewById(R.id.password_input);
         loginButton = findViewById(R.id.login_button);
         progressBar = findViewById(R.id.progress_bar);
-        registerTextView = findViewById(R.id.register_link);  // Referencia al TextView de registro
+        registerTextView = findViewById(R.id.register_link);
 
-        // Acción al hacer clic en el botón de iniciar sesión
         loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
@@ -49,29 +50,25 @@ public class Login extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
 
             new Thread(() -> {
-                try {
-                    Thread.sleep(2000); // Simulación de tiempo de espera
+                boolean loginSuccessful = dbHelper.verifyUserCredentials(email, password);
 
-                    runOnUiThread(() -> {
-                        progressBar.setVisibility(View.GONE);  // Ocultar el ProgressBar
+                runOnUiThread(() -> {
+                    progressBar.setVisibility(View.GONE);
 
+                    if (loginSuccessful) {
                         Toast.makeText(Login.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-
-                        // Redirigir al MenuPrincipal
                         Intent intent = new Intent(Login.this, MenuPrincipal.class);
                         startActivity(intent);
                         finish();
-                    });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                    } else {
+                        Toast.makeText(Login.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }).start();
         });
 
-        // Acción al hacer clic en el TextView para registrarse
         registerTextView.setOnClickListener(v -> {
-            // Ir a la actividad de registro
-            Intent intent = new Intent(Login.this, registro.class);  // registro es tu clase de actividad de registro
+            Intent intent = new Intent(Login.this, Registro.class);
             startActivity(intent);
         });
     }

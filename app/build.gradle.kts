@@ -32,7 +32,9 @@ android {
 }
 
 dependencies {
-
+    implementation ("androidx.room:room-runtime:2.3.0")
+    annotationProcessor ("androidx.room:room-compiler:2.3.0")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
