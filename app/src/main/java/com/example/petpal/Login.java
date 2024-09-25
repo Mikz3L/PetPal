@@ -50,7 +50,7 @@ public class Login extends AppCompatActivity {
 
             new Thread(() -> {
                 try {
-                    Thread.sleep(2000); // Simulación de tiempo de espera
+                    Thread.sleep(3000); // Aumentar a 3 segundos (2 segundos de espera + 1 segundo adicional)
 
                     runOnUiThread(() -> {
                         progressBar.setVisibility(View.GONE);  // Ocultar el ProgressBar
