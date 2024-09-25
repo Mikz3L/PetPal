@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Mi Aplicación de Mascotas</string>
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="email_hint">Correo Electrónico</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="login_button">Iniciar Sesión</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="register_link">¿No tienes cuenta? Regístrate</string>
+</resources>
