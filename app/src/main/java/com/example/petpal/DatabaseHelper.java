@@ -3,8 +3,10 @@ package com.example.petpal;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,45 +25,67 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "name TEXT," // Asegúrate de que exista la columna `name`
-                + "email TEXT UNIQUE," // Y `email` también
-                + "password TEXT"
+                + "owner_name TEXT," // Agregado: columna para el nombre del dueño
+                + "email TEXT UNIQUE," // Columna para el email
+                + "password TEXT" // Columna para la contraseña
                 + ")";
-        db.execSQL(CREATE_USERS_TABLE);
+        try {
+            db.execSQL(CREATE_USERS_TABLE);
+        } catch (SQLException e) {
+            Log.e("DatabaseError", "Error al crear la tabla de usuarios: " + e.getMessage());
+        }
     }
-
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-        onCreate(db);
+        try {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+            onCreate(db);
+        } catch (SQLException e) {
+            Log.e("DatabaseError", "Error al actualizar la base de datos: " + e.getMessage());
+        }
     }
 
     // Método para registrar un usuario
-    public boolean registerUser(String email, String password) {
+    public boolean registerUser(String ownerName, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        values.put("owner_name", ownerName);
         values.put("email", email);
         values.put("password", password);
 
-        long result = db.insert(TABLE_USERS, null, values);
-        db.close();
-        return result != -1;
+        try {
+            long result = db.insert(TABLE_USERS, null, values);
+            return result != -1;
+        } catch (SQLException e) {
+            Log.e("DatabaseError", "Error al registrar usuario: " + e.getMessage());
+            return false;
+        } finally {
+            db.close();
+        }
     }
 
     // Método para verificar las credenciales en el inicio de sesión
     public boolean verifyUserCredentials(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT password FROM " + TABLE_USERS + " WHERE email = ?", new String[]{email});
-
+        Cursor cursor = null;
         boolean validCredentials = false;
-        if (cursor.moveToFirst()) {
-            String storedPassword = cursor.getString(0);
-            validCredentials = storedPassword.equals(password);
+
+        try {
+            cursor = db.rawQuery("SELECT password FROM " + TABLE_USERS + " WHERE email = ?", new String[]{email});
+            if (cursor.moveToFirst()) {
+                String storedPassword = cursor.getString(0);
+                validCredentials = storedPassword.equals(password);
+            }
+        } catch (SQLException e) {
+            Log.e("DatabaseError", "Error al verificar credenciales: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
         }
-        cursor.close();
-        db.close();
         return validCredentials;
     }
 
@@ -69,40 +93,76 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Usuarios> getAllUsers() {
         List<Usuarios> userList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USERS, null);
+        Cursor cursor = null;
 
-        if (cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
-                String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
-                String name = null; // Asigna un valor por defecto o null si no tienes un nombre
+        try {
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_USERS, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                    String ownerName = cursor.getString(cursor.getColumnIndexOrThrow("owner_name"));
+                    String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
 
-                // Creamos un nuevo objeto User y lo agregamos a la lista
-                userList.add(new Usuarios(id, name, email));
-            } while (cursor.moveToNext());
+                    Usuarios user = new Usuarios(id, email, ownerName);
+                    userList.add(user);
+                } while (cursor.moveToNext());
+            }
+        } catch (SQLException e) {
+            Log.e("DatabaseError", "Error al obtener todos los usuarios: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
         }
-        cursor.close();
-        db.close();
         return userList;
     }
 
-
-    // Método para actualizar el email de un usuario
-    public boolean updateUser(int id, String newEmail) {
+    // Método para actualizar el email y el nombre de un usuario
+    public boolean updateUser(int userId, String ownerName, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("email", newEmail);
 
-        int rowsAffected = db.update(TABLE_USERS, values, "id = ?", new String[]{String.valueOf(id)});
+        // Verificar si el email ya existe en la base de datos
+        Cursor cursor = db.rawQuery("SELECT id FROM " + TABLE_USERS + " WHERE email = ?", new String[]{email});
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.close();
+            // Si el email ya existe, devuelve false
+            Log.e("DatabaseError", "El email ya está en uso.");
+            return false;
+        }
+
+        // Cerrar el cursor si no es necesario
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        // Proceder con la actualización si el email es único
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("owner_name", ownerName);  // Usa el nombre correcto de la columna
+        contentValues.put("email", email);           // Usa el nombre correcto de la columna
+
+        // Intenta actualizar el usuario donde el ID coincida
+        int result = db.update(TABLE_USERS, contentValues, "id = ?", new String[]{String.valueOf(userId)});
         db.close();
-        return rowsAffected > 0;
+
+        // Si result es mayor que 0, significa que la actualización fue exitosa
+        return result > 0;
     }
+
+
+
 
     // Método para eliminar un usuario
     public boolean deleteUser(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int rowsDeleted = db.delete(TABLE_USERS, "id = ?", new String[]{String.valueOf(id)});
-        db.close();
-        return rowsDeleted > 0;
+        try {
+            int rowsDeleted = db.delete(TABLE_USERS, "id = ?", new String[]{String.valueOf(id)});
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            Log.e("DatabaseError", "Error al eliminar usuario: " + e.getMessage());
+            return false;
+        } finally {
+            db.close();
+        }
     }
 }

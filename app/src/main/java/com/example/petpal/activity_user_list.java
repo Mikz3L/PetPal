@@ -1,33 +1,68 @@
 package com.example.petpal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
 
 public class activity_user_list extends AppCompatActivity {
+
+    private static final int REQUEST_CODE_EDIT_USER = 1; // Define un código de solicitud
+    private RecyclerView recyclerView;
+    private UsuariosAdapter usuariosAdapter;
+    private DatabaseHelper dbHelper;
+    private List<Usuarios> userList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_user_list);
+        setContentView(R.layout.activity_user_list); // Asegúrate de que el layout sea el correcto
 
-        View mainView = findViewById(R.id.main); // Encuentra la vista principal
-        if (mainView == null) {
-            Log.e("activity_user_list", "La vista principal es null. Verifica el ID en el XML.");
-            return; // Detiene la ejecución si la vista es null
+        // Inicializa la base de datos
+        dbHelper = new DatabaseHelper(this);
+
+        // Obtén la lista de usuarios de la base de datos
+        loadUsers(); // Carga los usuarios al iniciar
+
+        // Configura el RecyclerView
+        recyclerView = findViewById(R.id.recyclerView);
+
+        // Verifica si recyclerView es null
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        } else {
+            Log.e("UsuariosActivity", "RecyclerView no encontrado.");
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // Configura el adaptador con la lista de usuarios
+        if (recyclerView != null) {
+            usuariosAdapter = new UsuariosAdapter(this, userList);
+            recyclerView.setAdapter(usuariosAdapter);
+        }
+    }
+
+    // Método para cargar la lista de usuarios
+    private void loadUsers() {
+        userList = dbHelper.getAllUsers();
+        if (userList == null) {
+            userList = new ArrayList<>(); // Inicializa la lista vacía si es null
+        }
+        // Si el adaptador ya fue inicializado, actualiza la lista de usuarios
+        if (usuariosAdapter != null) {
+            usuariosAdapter.updateUsers(userList);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_EDIT_USER && resultCode == RESULT_OK) {
+            // Vuelve a cargar la lista de usuarios
+            loadUsers();
+        }
     }
 }

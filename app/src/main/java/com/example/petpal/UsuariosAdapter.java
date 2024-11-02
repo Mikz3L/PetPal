@@ -1,6 +1,8 @@
 package com.example.petpal;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,22 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.ViewHo
         holder.emailTextView.setText(user.getEmail());
         holder.nameTextView.setText(user.getName());
 
+        // Evento del botón Editar
+        holder.editButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, EditUserActivity.class);
+            intent.putExtra("Id", user.getId());
+            intent.putExtra("Email", user.getEmail());
+            intent.putExtra("OwnerName", user.getName());
+
+            // Verificar si el contexto es una instancia de UsuariosActivity para evitar el ClassCastException
+            if (context instanceof UsuariosActivity) {
+                ((UsuariosActivity) context).startActivityForResult(intent, 1);
+            } else {
+                context.startActivity(intent);
+            }
+        });
+
+        // Evento del botón Eliminar
         holder.deleteButton.setOnClickListener(v -> {
             dbHelper.deleteUser(user.getId());
             userList.remove(position);
@@ -52,16 +70,25 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.ViewHo
         return userList.size();
     }
 
+    // Método para actualizar la lista de usuarios
+    public void updateUsers(List<Usuarios> newUserList) {
+        this.userList = newUserList;
+        notifyDataSetChanged(); // Notifica que los datos han cambiado y debe actualizarse la vista
+    }
+
+    // Clase ViewHolder interna para el RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView emailTextView;
         TextView nameTextView;
         Button deleteButton;
+        Button editButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             emailTextView = itemView.findViewById(R.id.textViewEmail);
             nameTextView = itemView.findViewById(R.id.userName);
             deleteButton = itemView.findViewById(R.id.buttonDelete);
+            editButton = itemView.findViewById(R.id.buttonUpdate);
         }
     }
 }

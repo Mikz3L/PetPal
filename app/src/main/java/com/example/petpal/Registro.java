@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Registro extends AppCompatActivity {
 
-    private EditText emailEditText, passwordEditText;
+    private EditText emailEditText, passwordEditText, ownerNameEditText;  // Agregar ownerName
     private Button registerButton;
     private DatabaseHelper dbHelper;
 
@@ -24,11 +24,19 @@ public class Registro extends AppCompatActivity {
 
         emailEditText = findViewById(R.id.editTextEmail);
         passwordEditText = findViewById(R.id.editTextPassword);
+        ownerNameEditText = findViewById(R.id.editTextOwnerName);  // Campo para el nombre del dueño
         registerButton = findViewById(R.id.buttonRegister);
 
         registerButton.setOnClickListener(v -> {
+            String ownerName = ownerNameEditText.getText().toString().trim();  // Obtener el nombre del dueño
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
+
+            // Validación de campos
+            if (TextUtils.isEmpty(ownerName)) {
+                ownerNameEditText.setError("El nombre del dueño es obligatorio");
+                return;
+            }
 
             if (TextUtils.isEmpty(email)) {
                 emailEditText.setError("El correo es obligatorio");
@@ -40,7 +48,9 @@ public class Registro extends AppCompatActivity {
                 return;
             }
 
-            boolean isRegistered = dbHelper.registerUser(email, password);
+            // Llamar al método de registro con ownerName, email y password
+            boolean isRegistered = dbHelper.registerUser(ownerName, email, password);
+
             if (isRegistered) {
                 Toast.makeText(Registro.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Registro.this, Login.class);
