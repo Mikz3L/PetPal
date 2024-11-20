@@ -46,7 +46,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Método para registrar un usuario
     public boolean registerUser(String ownerName, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -66,7 +65,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Método para verificar las credenciales en el inicio de sesión
     public boolean verifyUserCredentials(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
@@ -89,7 +87,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return validCredentials;
     }
 
-    // Método para obtener todos los usuarios
     public List<Usuarios> getAllUsers() {
         List<Usuarios> userList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -118,41 +115,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userList;
     }
 
-    // Método para actualizar el email y el nombre de un usuario
     public boolean updateUser(int userId, String ownerName, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Verificar si el email ya existe en la base de datos
         Cursor cursor = db.rawQuery("SELECT id FROM " + TABLE_USERS + " WHERE email = ?", new String[]{email});
         if (cursor != null && cursor.getCount() > 0) {
             cursor.close();
-            // Si el email ya existe, devuelve false
             Log.e("DatabaseError", "El email ya está en uso.");
             return false;
         }
 
-        // Cerrar el cursor si no es necesario
         if (cursor != null) {
             cursor.close();
         }
 
-        // Proceder con la actualización si el email es único
         ContentValues contentValues = new ContentValues();
         contentValues.put("owner_name", ownerName);  // Usa el nombre correcto de la columna
         contentValues.put("email", email);           // Usa el nombre correcto de la columna
 
-        // Intenta actualizar el usuario donde el ID coincida
         int result = db.update(TABLE_USERS, contentValues, "id = ?", new String[]{String.valueOf(userId)});
         db.close();
 
-        // Si result es mayor que 0, significa que la actualización fue exitosa
         return result > 0;
     }
 
 
 
 
-    // Método para eliminar un usuario
     public boolean deleteUser(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {

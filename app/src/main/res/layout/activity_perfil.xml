@@ -71,24 +71,30 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/txt_nombre_usuario"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Nombre de Mascota: Toby"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:text="Nombre de usuario"
+                        android:textSize="20sp"
+                        android:paddingBottom="8dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/txt_email_usuario"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Correo del dueño: juanperez@email.com"
-                        android:textSize="14sp" />
+                        android:text="Email del usuario"
+                        android:textSize="20sp"
+                        android:paddingBottom="8dp" />
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:src="@drawable/images3"
+                        android:id="@+id/profileImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add"
                         android:scaleType="centerCrop"
-                        android:layout_marginTop="16dp"/>
+                        android:background="@drawable/circle_background"
+                        android:contentDescription="@string/profile_image" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -98,66 +104,79 @@
                 android:layout_height="wrap_content"
                 android:text="Selecciona una opción:"
                 android:textSize="16sp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp" />
 
-            <Spinner
-                android:id="@+id/my_spinner"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:entries="@array/spinner_options"/>
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <Spinner
+                    android:id="@+id/my_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:entries="@array/spinner_options" />
+
+                <Button
+                    android:id="@+id/btn_registrar_actividad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Registrar Actividad"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_asignar_fecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Asignar Fecha"
+                android:textColor="@android:color/white" />
 
             <!-- RecyclerView for displaying a list -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lista de actividades de salud:"
+                android:text="Calendario de Actividades:"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/my_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"/>
+                android:nestedScrollingEnabled="false" />
 
-            <!-- TableLayout for displaying data in a table format -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Historial médico veterinario:"
-                android:textSize="16sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"/>
 
+            <!-- TableLayout for registered activities -->
             <TableLayout
                 android:id="@+id/tableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="1">
+                android:stretchColumns="*"
+                android:layout_marginTop="16dp"
+                android:padding="8dp">
 
-                <!-- Encabezado de la tabla -->
                 <TableRow>
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Fecha"
-                        android:textStyle="bold"
-                        android:padding="8dp"
-                        android:layout_weight="1"/>
+                        android:layout_margin="8dp"
+                        android:textStyle="bold" />
+
                     <TextView
-                        android:text="Condición"
-                        android:textStyle="bold"
-                        android:padding="8dp"
-                        android:layout_weight="1"/>
-                    <TextView
-                        android:text="Tratamiento"
-                        android:textStyle="bold"
-                        android:padding="8dp"
-                        android:layout_weight="1"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Actividad"
+                        android:layout_margin="8dp"
+                        android:textStyle="bold" />
                 </TableRow>
-
             </TableLayout>
-
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

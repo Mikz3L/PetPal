@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,24 +21,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PetPal"
-        tools:targetApi="31">
+        tools:targetApi="35">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <activity
+            android:name=".Perfil"
+            android:exported="false" />
+
+        <activity
+            android:name=".Community"
+            android:exported="false" />
+        <activity
+            android:name=".Geolocalizacion"
+            android:exported="false" />
         <activity
             android:name=".EditUserActivity"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".activity_user_list"
             android:exported="false" />
         <activity
-            android:name=".Perfil"
-            android:exported="false" />
-        <activity
-            android:name=".MenuPrincipal"
+            android:name=".RegistroActividades"
             android:exported="false" />
         <activity
             android:name=".Registro"
             android:exported="false" />
         <activity
-            android:name=".activity_user_list"
+            android:name=".MenuPrincipal"
+            android:exported="false" />
+        <activity
+            android:name=".Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -6,8 +6,9 @@
     <string name="login_button">Iniciar Sesión</string>
     <string name="forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="register_link">¿No tienes cuenta? Regístrate</string>
-    <string name="navigation_drawer_open">Abrir menú</string>
-    <string name="navigation_drawer_close">Cerrar menú</string>
+    <string name="open_nav">Abrir menú</string>
+    <string name="close_nav">Cerrar menú</string>
+    <string name="profile_image">Imagen Perfil</string>
 
     <string-array name="spinner_options">
         <item>Actividad Física</item>

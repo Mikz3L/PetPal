@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
@@ -7,163 +7,197 @@
     android:layout_height="match_parent"
     tools:context=".MenuPrincipal">
 
-    <ScrollView
+    <!-- Contenedor principal para todo el contenido -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/main"
+        <!-- ScrollView que envuelve todo el contenido -->
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/my_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:titleTextAppearance="@style/CenteredToolbarTitle"
-                app:titleTextColor="@android:color/white">
-
-                <ImageButton
-                    android:id="@+id/btn_logout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginEnd="16dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Cerrar sesión"
-                    android:src="@drawable/ic_logout"
-                    app:tint="@android:color/white" />
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="PetPal"
-                    android:textColor="@android:color/white"
-                    android:textSize="50sp" />
-
-                <ImageButton
-                    android:id="@+id/btn_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginStart="16dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Menú"
-                    android:src="@drawable/ic_menu"
-                    app:tint="@android:color/white" />
-            </androidx.appcompat.widget.Toolbar>
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/content_layout"
+                android:id="@+id/main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:text="Bienvenido"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/image_main"
-                    android:layout_width="match_parent"
-                    android:layout_height="355dp"
-                    android:layout_marginBottom="16dp"
-                    android:contentDescription="Imagen principal"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/images4" />
-
-                <TextView
-                    android:id="@+id/text_content"
+                <!-- Barra de herramientas (Toolbar) -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/my_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="PetPal es una aplicación diseñada para amantes de los animales. Permite a los usuarios encontrar servicios para sus mascotas, conectarse con otros dueños y obtener información útil sobre el cuidado de los animales."
-                    android:textSize="16sp" />
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:titleTextAppearance="@style/CenteredToolbarTitle"
+                    app:titleTextColor="@android:color/white">
 
-                <TextView
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="PetPal"
+                        android:textColor="@android:color/white"
+                        android:textSize="50sp" />
+
+                    <ImageButton
+                        android:id="@+id/btn_menu"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="end"
+                        android:layout_marginStart="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Menú"
+                        android:src="@drawable/ic_menu"
+                        app:tint="@android:color/white" />
+
+                </androidx.appcompat.widget.Toolbar>
+
+                <!-- Contenido principal -->
+                <LinearLayout
+                    android:id="@+id/content_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="Con PetPal, puedes explorar diferentes servicios como paseadores de perros, cuidadores de mascotas, veterinarios cercanos, y mucho más. La aplicación está diseñada para facilitarte la vida como dueño de una mascota, ofreciéndote acceso a toda la información que necesitas para mantener a tu animal feliz y saludable."
-                    android:textSize="16sp" />
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <ImageView
-                    android:id="@+id/image_second"
-                    android:layout_width="match_parent"
-                    android:layout_height="319dp"
-                    android:layout_marginBottom="16dp"
-                    android:contentDescription="Segunda imagen"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/images2" />
+                    <!-- Título de bienvenida -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="8dp"
+                        android:text="Bienvenido"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="Únete a nuestra comunidad y comparte tus experiencias con otros amantes de los animales. Ya sea que tengas un perro, un gato o cualquier otra mascota, PetPal es el lugar perfecto para ti. Descarga la aplicación y comienza a disfrutar de todos los beneficios que tenemos para ofrecerte."
-                    android:textSize="16sp" />
+                    <!-- Imagen de la izquierda y texto a la derecha -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="16dp"
-                    android:text="¡Estamos aquí para ayudarte a cuidar de tu mejor amigo!"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                        <ImageView
+                            android:id="@+id/image_main"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_marginEnd="16dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/images4"
+                            android:contentDescription="Imagen principal"/>
 
-                <!-- RatingBar que queremos ocultar -->
-                <RatingBar
-                    android:id="@+id/rating_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:stepSize="1"
-                    android:layout_gravity="center" />
+                        <TextView
+                            android:id="@+id/text_content"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="PetPal es una aplicación diseñada para amantes de los animales. Permite a los usuarios encontrar servicios para sus mascotas, conectarse con otros dueños y obtener información útil sobre el cuidado de los animales."
+                            android:textSize="16sp" />
+                    </LinearLayout>
 
-                <!-- TextView para el mensaje enviado -->
-                <TextView
-                    android:id="@+id/message_sent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="¡valoración enviada, muchas gracias por tu opinión!"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/holo_green_dark"
-                    android:visibility="gone" /> <!-- Oculto por defecto -->
+                    <!-- Imagen de la derecha y texto a la izquierda -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
 
-                <ImageButton
-                    android:id="@+id/btn_send_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Enviar mensaje"
-                    android:src="@drawable/ic_send" />
+                        <ImageView
+                            android:id="@+id/image_second"
+                            android:layout_width="144dp"
+                            android:layout_height="126dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="Segunda imagen"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/images2"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/text_content_second"
+                            android:layout_width="213dp"
+                            android:layout_height="226dp"
+                            android:text="Con PetPal, puedes explorar diferentes servicios como paseadores de perros, cuidadores de mascotas, veterinarios cercanos, y mucho más. La aplicación está diseñada para facilitarte la vida como dueño de una mascota, ofreciéndote acceso a toda la información que necesitas para mantener a tu animal feliz y saludable."
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/image_second"
+                            app:layout_constraintHorizontal_bias="0.052"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="1.0" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Texto adicional -->
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/images5" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="Únete a nuestra comunidad y comparte tus experiencias con otros amantes de los animales. Ya sea que tengas un perro, un gato o cualquier otra mascota, PetPal es el lugar perfecto para ti. Descarga la aplicación y comienza a disfrutar de todos los beneficios que tenemos para ofrecerte."
+                        android:textSize="16sp"
+                        android:justificationMode="inter_word" />
 
 
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="16dp"
+                        android:text="¡Estamos aquí para ayudarte a cuidar de tu mejor amigo!"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <!-- Rating bar -->
+                    <RatingBar
+                        android:id="@+id/rating_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:stepSize="1"
+                        android:layout_gravity="center" />
+
+                    <!-- Mensaje de agradecimiento -->
+                    <TextView
+                        android:id="@+id/message_sent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="¡valoración enviada, muchas gracias por tu opinión!"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:visibility="gone" />
+
+                    <!-- Botón para enviar mensaje -->
+                    <ImageButton
+                        android:id="@+id/btn_send_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Enviar mensaje"
+                        android:src="@drawable/ic_send" />
+                </LinearLayout>
             </LinearLayout>
+        </ScrollView>
 
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
+    <!-- NavigationView (menú lateral) -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="end"
         app:menu="@menu/drawer_menu" />
-
 </androidx.drawerlayout.widget.DrawerLayout>
